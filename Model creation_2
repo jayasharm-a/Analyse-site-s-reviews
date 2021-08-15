@@ -1,0 +1,67 @@
+import pandas as pd
+
+data =  pd.read_csv('balanced_reviews.csv')
+
+# checking the shape and type of data
+data.shape
+data.dtypes
+sample=pd.DataFrame(data.head(10))
+data.isnull().any(axis = 0)
+
+#missing data handelling by droping it 
+#data preprocessing
+data.dropna(inplace =  True)
+
+#leaving the reviews with rating 3 and left with rating 1, 2, 4 and 5 onyl
+
+data = data [data['overall'] != 3]
+
+import numpy as np
+
+# create another column which provides positive and negative as label
+data['Positivity'] = np.where(data['overall'] > 3 , 1 , 0)
+
+#reviewText - feature - data['reviewText']
+#Positivity - label - data['Positivity']
+
+from sklearn.model_selection import train_test_split
+features_train, features_test, labels_train, labels_test = train_test_split(data['reviewText'], data['Positivity'], random_state = 42 )
+
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+vect = TfidfVectorizer(min_df = 5).fit(features_train)
+
+
+features_train_vectorized = vect.transform(features_train)
+
+#Applying model 
+from sklearn.linear_model import LogisticRegression
+model = LogisticRegression()
+
+model.fit(features_train_vectorized, labels_train)
+
+predictions = model.predict(vect.transform(features_test))
+
+
+from sklearn.metrics import confusion_matrix
+
+confusion_matrix(labels_test, predictions)
+
+from sklearn.metrics import roc_auc_score
+roc_auc_score(labels_test, predictions)
+
+
+#save - pickle format
+
+#Using picke file we save the model as well as vocabluary in two
+#different files so that can be run on client's machine and provides output
+ 
+import pickle
+
+file  = open("pickle_model.pkl","wb")
+pickle.dump(model, file)
+
+#pickle the vocabulary
+pickle.dump(vect.vocabulary_, open('features.pkl', 'wb'))
+
