@@ -55,7 +55,7 @@ def create_app_ui():
         dbc.Jumbotron(
                  [
                     html.H1(id = 'heading', children = project_name, className = 'display-3 mb-4',style = {'font-size':'3em','font-weight':'bold','font-family':'Roboto Black Italic'}),
-                    dbc.Textarea(id = 'textarea', className="mb-3 text-center", placeholder="Enter the Review",value=" Enter your Review" , style = {'height': '150px','color':'purple','background-color':'grey','font-weight':'bold'}),
+                    dbc.Textarea(id = 'textarea', className="mb-3 text-center", placeholder="Enter the Review",value=" Enter your Review" , style = {'height': '170px','color':'purple','background-color':'white','font-weight':'bold'}),
                     dbc.Container([
                         dcc.Dropdown(
                     id='dropdown',
