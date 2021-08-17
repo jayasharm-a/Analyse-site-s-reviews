@@ -13,22 +13,27 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
 
 ####### Declaring Global variables
-project_name = "Sentiment Analysis with Insights"
+project_name =  None
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
-
+scrappedReviews = None
+ideas=['CHOOSE YOUR OPTION',"I said they are somewhat small",'Nothing like the real thing with real leather.','All you can ask for. I got what i ordered Thanks!!' ,
+       'quality was good','quality was bad'," ",'Great material and perfect quality!']
 ####### Defining My Functions
+def jaya():
+        pass;
+        
 def loading_model():
     global scrappedReviews
-    scrappedReviews = pd.read_csv('Downloads//balanced_reviews.csv')
-  
+    scrappedReviews = pd.read_csv('C://Users//user//Downloads//balanced_reviews.csv')
+ 
     global pickle_model
-    file = open("Downloads//pickle_model.pkl", 'rb') 
+    file = open("C://Users/user//Downloads//pickle_model (1).pkl", 'rb') 
     pickle_model = pickle.load(file)
     
     
 
     global vocab
-    file = open("Downloads//features.pkl", 'rb') 
+    file = open("C://Users//user//Downloads//features.pkl", 'rb') 
     vocab = pickle.load(file)
 
 def check_review(reviewText):
@@ -49,14 +54,14 @@ def create_app_ui():
     main_layout = dbc.Container(
         dbc.Jumbotron(
                  [
-                    html.H1(id = 'heading', children = project_name, className = 'display-3 mb-4'),
-                    dbc.Textarea(id = 'textarea', className="mb-3", placeholder="Enter the Review", value = 'My daughter loves these shoes', style = {'height': '150px'}),
+                    html.H1(id = 'heading', children = project_name, className = 'display-3 mb-4',style = {'font-size':'3em','font-weight':'bold','font-family':'Roboto Black Italic'}),
+                    dbc.Textarea(id = 'textarea', className="mb-3 text-center", placeholder="Enter the Review",value=" Enter your Review" , style = {'height': '150px','color':'purple','background-color':'grey','font-weight':'bold'}),
                     dbc.Container([
                         dcc.Dropdown(
                     id='dropdown',
                     placeholder = 'Select a Review',
-                    options=[{'label': i[:100] + "...", 'value': i} for i in scrappedReviews.reviews],
-                    value = scrappedReviews.reviews[0],
+                    options=[{'label': i[:100] + "...", 'value': i} for i in ideas],
+                    value = ideas[0],
                     style = {'margin-bottom': '30px'}
                     
                 )
@@ -119,12 +124,13 @@ def update_dropdown(n_clicks, value):
 ####### Main Function to control the Flow of your Project
 def main():
     print("Start of project")
+    global project_name
+    global app
+    jaya()
     loading_model()
     browser_opening()
     
-    global scrappedReviews
-    global project_name
-    global app
+    
     
     project_name = "Sentiment Analysis with Insights"
     print("My project name = ", project_name)
@@ -135,7 +141,7 @@ def main():
     
     print("End of project")
     project_name = None
-    scrappedReviews = None
+    
     app = None
         
 ####### Calling the main function 
